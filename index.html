@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Total Solar Eclipse · 2 August 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#f1c27d;--ink:#ece8df;--dim:#96928b;--line:rgba(255,255,255,.13);--glass:rgba(7,9,15,.58)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:var(--ink);overflow:hidden;
+  font:13px/1.5 ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#gl:active{cursor:grabbing}
+.serif{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif}
+.num{font-variant-numeric:tabular-nums}
+#title{position:fixed;left:28px;top:22px;pointer-events:none;text-shadow:0 1px 14px rgba(0,0,0,.8)}
+#title .eyebrow{letter-spacing:.34em;text-transform:uppercase;font-size:10.5px;color:var(--gold)}
+#title h1{margin:2px 0 0;font:400 44px/1.05 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em}
+#title .sub{color:var(--dim);font-size:12px;margin-top:6px;max-width:330px}
+#panel{position:fixed;right:22px;top:22px;width:272px;padding:16px 18px 14px;background:var(--glass);
+  border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+#panel h2{margin:0 0 6px;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+#panel .big{font:400 34px/1.05 "Cormorant Garamond",Georgia,serif}
+#panel .big small{font-size:15px;color:var(--dim);margin-left:4px}
+#panel .where{font-size:15px;margin-top:4px}
+#panel .near{color:var(--dim);font-size:12px}
+#panel hr{border:0;border-top:1px solid var(--line);margin:11px 0}
+#panel dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:3px 10px}
+#panel dt{color:var(--dim)} #panel dd{margin:0;text-align:right}
+#panel dd.hero{color:var(--gold);font-size:15px}
+#panel .now{min-height:54px;font-size:12px}
+#panel .now b{font-weight:500;color:var(--ink)}
+#panel .foot{color:#6f6c67;font-size:10.5px;line-height:1.4;margin-top:9px}
+#ground{position:fixed;left:28px;top:150px;width:290px;display:none;text-shadow:0 1px 10px rgba(0,0,0,.9)}
+#ground .phase{font:400 26px/1.15 "Cormorant Garamond",Georgia,serif}
+#ground .count{color:var(--gold);font-size:14px;margin:2px 0 10px}
+#ground table{border-collapse:collapse;font-size:12px}
+#ground td{padding:1px 14px 1px 0;color:var(--dim)} #ground td+td{color:var(--ink)}
+#ground .row{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;color:var(--ink);background:rgba(255,255,255,.05);border:1px solid var(--line);
+  border-radius:999px;padding:6px 13px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+button:hover{background:rgba(255,255,255,.12)}
+button.on{color:#15100a;background:var(--gold);border-color:var(--gold)}
+#bar{position:fixed;left:22px;right:22px;bottom:18px;padding:12px 16px 12px;background:var(--glass);
+  border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:grid;grid-template-columns:auto auto 1fr auto;gap:14px;align-items:center}
+#bar .grp{display:flex;gap:6px;align-items:center}
+#play{width:38px;height:38px;padding:0;font-size:14px}
+#clock{font:400 25px/1 "Cormorant Garamond",Georgia,serif;min-width:118px}
+#clock small{font-size:12px;color:var(--dim);margin-left:4px;font-family:ui-sans-serif,system-ui,sans-serif}
+#track{position:relative;height:38px}
+#scrub{position:absolute;left:0;right:0;top:4px;width:100%;margin:0;height:16px;background:none;-webkit-appearance:none;appearance:none}
+#scrub::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(241,194,125,.7),rgba(255,255,255,.12))}
+#scrub::-moz-range-track{height:2px;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(241,194,125,.7),rgba(255,255,255,.12))}
+#scrub::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;margin-top:-6px;background:#000;border:2px solid var(--gold);box-shadow:0 0 12px rgba(241,194,125,.8)}
+#scrub::-moz-range-thumb{width:11px;height:11px;border-radius:50%;background:#000;border:2px solid var(--gold);box-shadow:0 0 12px rgba(241,194,125,.8)}
+#ticks{position:absolute;left:7px;right:7px;top:0;height:100%;pointer-events:none}
+.tick{position:absolute;top:8px;width:1px;height:9px;background:rgba(255,255,255,.4)}
+.tick span{position:absolute;top:11px;left:0;transform:translateX(-50%);white-space:nowrap;font-size:10px;color:var(--dim);letter-spacing:.04em}
+.tick.key{background:var(--gold)} .tick.key span{color:var(--gold)}
+.lab{position:fixed;left:0;top:0;pointer-events:none;white-space:nowrap;font-size:11px;letter-spacing:.08em;color:var(--gold);
+  text-shadow:0 0 8px #000,0 0 3px #000;transform:translate(-50%,-50%);will-change:transform}
+.lab i{display:block;width:1px;height:22px;background:var(--gold);margin:0 auto 3px;opacity:.7}
+#hint{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);color:var(--dim);font-size:11px;letter-spacing:.06em;pointer-events:none;text-shadow:0 0 8px #000}
+#err{position:fixed;left:28px;bottom:100px;max-width:520px;color:#ff9c8a;font:12px/1.4 ui-monospace,Consolas,monospace;white-space:pre-wrap}
+@media (max-width:860px){
+  #title h1{font-size:30px} #title .sub{display:none}
+  #panel{width:216px;right:10px;top:10px;padding:12px;font-size:12px} #panel .big{font-size:26px} #panel .foot{display:none}
+  #bar{left:8px;right:8px;bottom:8px;grid-template-columns:auto 1fr;gap:8px} #track{grid-column:1/-1;order:5}
+  #ground{top:96px;left:14px;width:230px} #title{left:14px;top:12px}
+}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<header id="title">
+  <div class="eyebrow">Total solar eclipse</div>
+  <h1>2 August 2027</h1>
+  <div class="sub">Sun and Moon are computed in your browser from planetary and lunar theory. Nothing about the path is stored — it falls out of the geometry.</div>
+</header>
+
+<aside id="panel">
+  <h2>Greatest eclipse · this model</h2>
+  <div class="big num" id="geTime">—<small>UT</small></div>
+  <div class="where num" id="geWhere">computing…</div>
+  <div class="near" id="geNear">&nbsp;</div>
+  <hr>
+  <dl class="num">
+    <dt>Totality there</dt><dd class="hero" id="geDur">—</dd>
+    <dt>Path width</dt><dd id="geWidth">—</dd>
+    <dt>Sun altitude</dt><dd id="geAlt">—</dd>
+    <dt>Gamma</dt><dd id="geGamma">—</dd>
+    <dt>Moon / Sun diameter</dt><dd id="geRatio">—</dd>
+  </dl>
+  <hr>
+  <h2>Longest totality on the path</h2>
+  <dl class="num">
+    <dt id="lgWhere">—</dt><dd class="hero" id="lgDur">—</dd>
+  </dl>
+  <div class="near" id="lgNear">&nbsp;</div>
+  <hr>
+  <h2>Now</h2>
+  <div class="now num" id="now">—</div>
+  <div class="foot" id="foot"></div>
+</aside>
+
+<section id="ground">
+  <div class="phase" id="gPhase">—</div>
+  <div class="count num" id="gCount">&nbsp;</div>
+  <table class="num" id="gTable"></table>
+  <div class="row">
+    <button id="gTele" class="on">Corona</button>
+    <button id="gWide">Wide sky</button>
+    <button id="gJump">Replay totality</button>
+  </div>
+</section>
+
+<div id="labels"></div>
+<div id="hint">drag to orbit · scroll to zoom</div>
+<div id="err"></div>
+
+<footer id="bar">
+  <div class="grp" id="views">
+    <button data-view="orbit" class="on">Orbit</button>
+    <button data-view="chase">Chase the umbra</button>
+    <button data-view="ground">From the ground</button>
+  </div>
+  <div class="grp">
+    <button id="play" title="Play / pause (space)">❚❚</button>
+    <div id="clock" class="num">--:--:--<small>UT</small></div>
+  </div>
+  <div id="track"><div id="ticks"></div><input id="scrub" type="range" min="0" max="1000" step="1" value="0" aria-label="Time"></div>
+  <div class="grp" id="speeds">
+    <button data-s="1">1×</button><button data-s="10">10×</button><button data-s="60">60×</button><button data-s="300">300×</button><button data-s="900">900×</button>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+window.addEventListener('error',e=>{const el=document.getElementById('err');if(el)el.textContent+=(e.message||e)+(e.lineno?'  (line '+e.lineno+')':'')+'\n';});
+
+/* ───────────────────────── constants & small helpers ───────────────────────── */
+const PI=Math.PI,TAU=2*PI,D2R=PI/180,R2D=180/PI,AS=D2R/3600;
+const AU=149597870.7;                       // km
+const RE=6378.137,FLAT=1/298.257223563;     // WGS84
+const E2=FLAT*(2-FLAT),RPOL=RE*(1-FLAT);
+const R_SUN=696000,R_MOON=1737.4;           // km
+const DELTA_T=69.2;                         // TT−UT1 in seconds (measured Earth-rotation offset, extrapolated to 2027)
+const DATE={y:2027,m:8,d:2};
+const JD0=Date.UTC(DATE.y,DATE.m-1,DATE.d)/864e5+2440587.5;   // JD at 0h UT of the date
+
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]];
+const mul=(a,k)=>[a[0]*k,a[1]*k,a[2]*k];
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const len=a=>Math.sqrt(dot(a,a));
+const norm=a=>mul(a,1/len(a));
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+const p2=n=>String(n).padStart(2,'0');
+function fmtUT(t,frac){t=((t%86400)+86400)%86400;const s=frac?Math.floor(t*10)/10:Math.round(t)%86400;
+  const h=Math.floor(s/3600),m=Math.floor((s-h*3600)/60),sec=s-h*3600-m*60;
+  return p2(h)+':'+p2(m)+':'+(frac?(sec<10?'0':'')+sec.toFixed(1):p2(sec));}
+const fmtLat=r=>Math.abs(r*R2D).toFixed(2)+'° '+(r>=0?'N':'S');
+const fmtLon=r=>Math.abs(r*R2D).toFixed(2)+'° '+(r>=0?'E':'W');
+function fmtDur(s){const m=Math.floor(s/60);return m+'m '+(s-m*60).toFixed(1).padStart(4,'0')+'s';}
+function fmtMS(s){s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+':'+p2(m):m)+':'+p2(s%60);}
+
+/* ───────────────────────── Sun: Earth's heliocentric orbit, VSOP87D series (truncated) ─────────────────────────
+   Triples are amplitude(1e-8), phase, frequency(rad / Julian millennium); one array per power of time. */
+const VL=[[175347046,0,0,3341656,4.6692568,6283.07585,34894,4.6261,12566.1517,3497,2.7441,5753.3849,3418,2.8289,3.5231,3136,3.6277,77713.7715,2676,4.4181,7860.4194,2343,6.1352,3930.2097,1324,0.7425,11506.7698,1273,2.0371,529.691,1199,1.1096,1577.3435,990,5.233,5884.927,902,2.045,26.298,857,3.508,398.149,780,1.179,5223.694,753,2.533,5507.553,505,4.583,18849.228,492,4.205,775.523,357,2.92,0.067,317,5.849,11790.629,284,1.899,796.298,271,0.315,10977.079,243,0.345,5486.778,206,4.806,2544.314,205,1.869,5573.143,202,2.458,6069.777,156,0.833,213.299,132,3.411,2942.463,126,1.083,20.775,115,0.645,0.98,103,0.636,4694.003,102,0.976,15720.839,102,4.267,7.114,99,6.21,2146.17,98,0.68,155.42,86,5.98,161000.69,85,1.3,6275.96,85,3.67,71430.7,80,1.81,17260.15,79,3.04,12036.46,75,1.76,5088.63,74,3.5,3154.69,74,4.68,801.82,70,0.83,9437.76,62,3.98,8827.39,61,1.82,7084.9,57,2.78,6286.6,56,4.39,14143.5,56,3.47,6279.55,52,0.19,12139.55,52,1.33,1748.02,51,0.28,5856.48,49,0.49,1194.45,41,5.37,8429.24,41,2.4,19651.05,39,6.17,10447.39,37,6.04,10213.29,37,2.57,1059.38,36,1.71,2352.87,36,1.78,6812.77,33,0.59,17789.85,30,0.44,83996.85,30,2.74,1349.87,25,3.16,4690.48],
+[628331966747,0,0,206059,2.678235,6283.07585,4303,2.6351,12566.1517,425,1.59,3.523,119,5.796,26.298,109,2.966,1577.344,93,2.59,18849.23,72,1.14,529.69,68,1.87,398.15,67,4.41,5507.55,59,2.89,5223.69,56,2.17,155.42,45,0.4,796.3,36,0.47,775.52,29,2.65,7.11,21,5.34,0.98,19,1.85,5486.78,19,4.97,213.3,17,2.99,6275.96,16,0.03,2544.31,16,1.43,2146.17,15,1.21,10977.08,12,2.83,1748.02,12,3.26,5088.63,12,5.27,1194.45,12,2.08,4694,11,0.77,553.57,10,1.3,6286.6,10,4.24,1349.87,9,2.7,242.73,9,5.64,951.72,8,5.3,2352.87,6,2.65,9437.76,6,4.67,4690.48],
+[52919,0,0,8720,1.0721,6283.0758,309,0.867,12566.152,27,0.05,3.52,16,5.19,26.3,16,3.68,155.42,10,0.76,18849.23,9,2.06,77713.77,7,0.83,775.52,5,4.66,1577.34,4,1.03,7.11,4,3.44,5573.14,3,5.14,796.3,3,6.05,5507.55,3,1.19,242.73,3,6.12,529.69,3,0.31,398.15,3,2.28,553.57,2,4.38,5223.69,2,3.75,0.98],
+[289,5.844,6283.076,35,0,0,17,5.49,12566.15,3,5.2,155.42,1,4.72,3.52,1,5.3,18849.23,1,5.97,242.73],
+[114,3.142,0,8,4.13,6283.08,1,3.84,12566.15],[1,3.14,0]];
+const VB=[[280,3.199,84334.662,102,5.422,5507.553,80,3.88,5223.69,44,3.7,2352.87,32,4,1577.34],[9,3.9,5507.55,6,1.73,5223.69]];
+const VR=[[100013989,0,0,1670700,3.0984635,6283.07585,13956,3.05525,12566.1517,3084,5.1985,77713.7715,1628,1.1739,5753.3849,1576,2.8469,7860.4194,925,5.453,11506.77,542,4.564,3930.21,472,3.661,5884.927,346,0.964,5507.553,329,5.9,5223.694,307,0.299,5573.143,243,4.273,11790.629,212,5.847,1577.344,186,5.022,10977.079,175,3.012,18849.228,110,5.055,5486.778,98,0.89,6069.78,86,5.69,15720.84,86,1.27,161000.69,65,0.27,17260.15,63,0.92,529.69,57,2.01,83996.85,56,5.24,71430.7,49,3.25,2544.31,47,2.58,775.52,45,5.54,9437.76,43,6.01,6275.96,39,5.36,4694,38,2.39,8827.39,37,0.83,19651.05,37,4.9,12139.55,36,1.67,12036.46,35,1.84,2942.46,33,0.24,7084.9,32,0.18,5088.63,32,1.78,398.15,28,1.21,6286.6,28,1.9,6279.55,26,4.59,10447.39],
+[103019,1.10749,6283.07585,1721,1.0644,12566.1517,702,3.142,0,32,1.02,18849.23,31,2.84,5507.55,25,1.32,5223.69,18,1.42,1577.34,10,5.91,10977.08,9,1.42,6275.96,9,0.27,5486.78],
+[4359,5.7846,6283.0758,124,5.579,12566.152,12,3.14,0,9,3.63,77713.77,6,1.87,5573.14,3,5.47,18849.23],
+[145,4.273,6283.076,7,3.92,12566.15],[4,2.56,6283.08]];
+function vsop(S,tau){let r=0,p=1;for(let k=0;k<S.length;k++){const s=S[k];let a=0;
+  for(let i=0;i<s.length;i+=3)a+=s[i]*Math.cos(s[i+1]+s[i+2]*tau);r+=a*p;p*=tau;}return r*1e-8;}
+let SUN_FALLBACK=false;
+/* Geocentric Sun, mean ecliptic & equinox of date, aberration applied → [longitude, latitude, distance AU] */
+function sunEcl(T){
+  const tau=T/10,L=vsop(VL,tau),B=vsop(VB,tau),R=vsop(VR,tau);
+  const lam=L+PI-0.09033*AS-20.4898*AS/R,bet=-B;
+  // independent Keplerian solution (mean anomaly + equation of centre) used as a guard on the series above
+  const M=(357.52911+35999.05029*T-0.0001537*T*T)*D2R;
+  const C=((1.914602-0.004817*T-0.000014*T*T)*Math.sin(M)+(0.019993-0.000101*T)*Math.sin(2*M)+0.000289*Math.sin(3*M))*D2R;
+  const lam2=(280.46646+36000.76983*T+0.0003032*T*T)*D2R+C-0.00569*D2R;
+  const e=0.016708634-0.000042037*T,R2=1.000001018*(1-e*e)/(1+e*Math.cos(M+C));
+  let d=(lam-lam2)%TAU;if(d>PI)d-=TAU;if(d<-PI)d+=TAU;
+  if(!(Math.abs(d)<0.015*D2R)||!(Math.abs(R-R2)<3e-4)){SUN_FALLBACK=true;return[lam2,0,R2];}
+  return[lam,bet,R];
+}
+
+/* ───────────────────────── Moon: main periodic terms of the ELP-2000/82 lunar theory ─────────────────────────
+   ML rows: D, M, M', F, Σl (1e-6°), Σr (1e-3 km).   MB rows: D, M, M', F, Σb (1e-6°). */
+const ML=[0,0,1,0,6288774,-20905355,2,0,-1,0,1274027,-3699111,2,0,0,0,658314,-2955968,0,0,2,0,213618,-569925,0,1,0,0,-185116,48888,0,0,0,2,-114332,-3149,2,0,-2,0,58793,246158,2,-1,-1,0,57066,-152138,2,0,1,0,53322,-170733,2,-1,0,0,45758,-204586,0,1,-1,0,-40923,-129620,1,0,0,0,-34720,108743,0,1,1,0,-30383,104755,2,0,0,-2,15327,10321,0,0,1,2,-12528,0,0,0,1,-2,10980,79661,4,0,-1,0,10675,-34782,0,0,3,0,10034,-23210,4,0,-2,0,8548,-21636,2,1,-1,0,-7888,24208,2,1,0,0,-6766,30824,1,0,-1,0,-5163,-8379,1,1,0,0,4987,-16675,2,-1,1,0,4036,-12831,2,0,2,0,3994,-10445,4,0,0,0,3861,-11650,2,0,-3,0,3665,14403,0,1,-2,0,-2689,-7003,2,0,-1,2,-2602,0,2,-1,-2,0,2390,10056,1,0,1,0,-2348,6322,2,-2,0,0,2236,-9884,0,1,2,0,-2120,5751,0,2,0,0,-2069,0,2,-2,-1,0,2048,-4950,2,0,1,-2,-1773,4130,2,0,0,2,-1595,0,4,-1,-1,0,1215,-3958,0,0,2,2,-1110,0,3,0,-1,0,-892,3258,2,1,1,0,-810,2616,4,-1,-2,0,759,-1897,0,2,-1,0,-713,-2117,2,2,-1,0,-700,2354,2,1,-2,0,691,0,2,-1,0,-2,596,0,4,0,1,0,549,-1423,0,0,4,0,537,-1117,4,-1,0,0,520,-1571,1,0,-2,0,-487,-1739,2,1,0,-2,-399,0,0,0,2,-2,-381,-4421,1,1,1,0,351,0,3,0,-2,0,-340,0,4,0,-3,0,330,0,2,-1,2,0,327,0,0,2,1,0,-323,1165,1,1,-1,0,299,0,2,0,3,0,294,0,2,0,-1,-2,0,8752];
+const MB=[0,0,0,1,5128122,0,0,1,1,280602,0,0,1,-1,277693,2,0,0,-1,173237,2,0,-1,1,55413,2,0,-1,-1,46271,2,0,0,1,32573,0,0,2,1,17198,2,0,1,-1,9266,0,0,2,-1,8822,2,-1,0,-1,8216,2,0,-2,-1,4324,2,0,1,1,4200,2,1,0,-1,-3359,2,-1,-1,1,2463,2,-1,0,1,2211,2,-1,-1,-1,2065,0,1,-1,-1,-1870,4,0,-1,-1,1828,0,1,0,1,-1794,0,0,0,3,-1749,0,1,-1,1,-1565,1,0,0,1,-1491,0,1,1,1,-1475,0,1,1,-1,-1410,0,1,0,-1,-1344,1,0,0,-1,-1335,0,0,3,1,1107,4,0,0,-1,1021,4,0,-1,1,833,0,0,1,-3,777,4,0,-2,1,671,2,0,0,-3,607,2,0,2,-1,596,2,-1,1,-1,491,2,0,-2,1,-451,0,0,3,-1,439,2,0,2,1,422,2,0,-3,-1,421,2,1,-1,1,-366,2,1,0,1,-351,4,0,0,1,331,2,-1,1,1,315,2,-2,0,-1,302,0,0,1,3,-283,2,1,1,-1,-229,1,1,0,-1,223,1,1,0,1,223,0,1,-2,-1,-220,2,1,-1,-1,-220,1,0,1,1,-185,2,-1,-2,-1,181,0,1,2,1,-177,4,0,-2,-1,176,4,-1,-1,-1,166,1,0,1,-1,-164,4,0,1,-1,132,1,0,-1,-1,-119,4,-1,0,-1,115,2,-2,0,1,107];
+/* Geocentric Moon, mean ecliptic & equinox of date → [longitude, latitude, distance km] */
+function moonEcl(T){
+  const T2=T*T,T3=T2*T,T4=T3*T;
+  const Lp=(218.3164477+481267.88123421*T-0.0015786*T2+T3/538841-T4/65194000)*D2R;   // mean longitude
+  const D=(297.8501921+445267.1114034*T-0.0018819*T2+T3/545868-T4/113065000)*D2R;    // mean elongation
+  const M=(357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000)*D2R;                // Sun's mean anomaly
+  const Mp=(134.9633964+477198.8675055*T+0.0087414*T2+T3/69699-T4/14712000)*D2R;     // Moon's mean anomaly
+  const F=(93.272095+483202.0175233*T-0.0036539*T2-T3/3526000+T4/863310000)*D2R;     // argument of latitude
+  const A1=(119.75+131.849*T)*D2R,A2=(53.09+479264.29*T)*D2R,A3=(313.45+481266.484*T)*D2R;
+  const E=1-0.002516*T-0.0000074*T2,EE=E*E;
+  let sl=0,sr=0,sb=0;
+  for(let i=0;i<ML.length;i+=6){const m=ML[i+1],a=ML[i]*D+m*M+ML[i+2]*Mp+ML[i+3]*F,k=m===0?1:(m===2||m===-2?EE:E);
+    sl+=ML[i+4]*k*Math.sin(a);sr+=ML[i+5]*k*Math.cos(a);}
+  for(let i=0;i<MB.length;i+=5){const m=MB[i+1],a=MB[i]*D+m*M+MB[i+2]*Mp+MB[i+3]*F,k=m===0?1:(m===2||m===-2?EE:E);
+    sb+=MB[i+4]*k*Math.sin(a);}
+  sl+=3958*Math.sin(A1)+1962*Math.sin(Lp-F)+318*Math.sin(A2);
+  sb+=-2235*Math.sin(Lp)+382*Math.sin(A3)+175*Math.sin(A1-F)+175*Math.sin(A1+F)+127*Math.sin(Lp-Mp)-115*Math.sin(Lp+Mp);
+  return[Lp+sl*1e-6*D2R,sb*1e-6*D2R,385000.56+sr*1e-3];
+}
+
+/* ───────────────────────── ephemeris: equatorial vectors of date (km) ───────────────────────── */
+function ecl2eq(lam,bet,r,eps){const cb=Math.cos(bet),sb=Math.sin(bet),cl=Math.cos(lam),sl=Math.sin(lam),ce=Math.cos(eps),se=Math.sin(eps);
+  return[r*cb*cl,r*(cb*sl*ce-sb*se),r*(cb*sl*se+sb*ce)];}
+function ephemAt(jde){
+  const T=(jde-2451545)/36525;
+  const Om=(125.04452-1934.136261*T)*D2R,Ls=(280.4665+36000.7698*T)*D2R,Lm=(218.3165+481267.8813*T)*D2R;
+  const dpsi=(-17.2*Math.sin(Om)-1.32*Math.sin(2*Ls)-0.23*Math.sin(2*Lm)+0.21*Math.sin(2*Om))*AS;   // nutation in longitude
+  const deps=(9.2*Math.cos(Om)+0.57*Math.cos(2*Ls)+0.1*Math.cos(2*Lm)-0.09*Math.cos(2*Om))*AS;       // nutation in obliquity
+  const eps=(84381.448-46.815*T-0.00059*T*T+0.001813*T*T*T)*AS+deps;
+  const s=sunEcl(T),m=moonEcl(T);
+  return{S:ecl2eq(s[0]+dpsi,s[1],s[2]*AU,eps),M:ecl2eq(m[0]+dpsi,m[1],m[2],eps),eqeq:dpsi*Math.cos(eps)};
+}
+/* The series are evaluated once a minute across the whole day and interpolated with a 4-point cubic. t = seconds of UT. */
+const STEP=60,NT=Math.round(86400/STEP)+3,EPH=new Float64Array(NT*6);
+let EQEQ=0;
+for(let j=0;j<NT;j++){const e=ephemAt(JD0+((j-1)*STEP+DELTA_T)/86400);EPH.set(e.S,j*6);EPH.set(e.M,j*6+3);if(j===(NT>>1))EQEQ=e.eqeq;}
+function gast(t){const d=JD0-2451545+t/86400,T=d/36525;   // Greenwich apparent sidereal time, radians
+  const th=280.46061837+360.98564736629*d+0.000387933*T*T-T*T*T/38710000;return(((th%360)+360)%360)*D2R+EQEQ;}
+function state(t){
+  const x=t/STEP+1,i=clamp(Math.floor(x),1,NT-3),f=x-i,o=(i-1)*6;
+  const w0=-f*(f-1)*(f-2)/6,w1=(f+1)*(f-1)*(f-2)/2,w2=-(f+1)*f*(f-2)/2,w3=(f+1)*f*(f-1)/6,v=[0,0,0,0,0,0];
+  for(let k=0;k<6;k++)v[k]=w0*EPH[o+k]+w1*EPH[o+6+k]+w2*EPH[o+12+k]+w3*EPH[o+18+k];
+  const th=gast(t),c=Math.cos(th),s=Math.sin(th);
+  return{th,Si:[v[0],v[1],v[2]],Mi:[v[3],v[4],v[5]],            // inertial (equator of date)
+         S:[v[0]*c+v[1]*s,-v[0]*s+v[1]*c,v[2]],M:[v[3]*c+v[4]*s,-v[3]*s+v[4]*c,v[5]]};   // Earth-fixed
+}
+
+/* ───────────────────────── shadow geometry ───────────────────────── */
+function rayEllipsoid(o,d){const k=RE/RPOL,oz=o[2]*k,dz=d[2]*k;
+  const a=d[0]*d[0]+d[1]*d[1]+dz*dz,b=o[0]*d[0]+o[1]*d[1]+oz*dz,c=o[0]*o[0]+o[1]*o[1]+oz*oz-RE*RE,q=b*b-a*c;
+  if(q<0)return null;const s=(-b-Math.sqrt(q))/a;if(s<0)return null;return{s,p:[o[0]+s*d[0],o[1]+s*d[1],o[2]+s*d[2]]};}
+function geodetic(p){return{lat:Math.atan2(p[2],(1-E2)*Math.hypot(p[0],p[1])),lon:Math.atan2(p[1],p[0])};}
+function mkSite(lat,lon){const sl=Math.sin(lat),cl=Math.cos(lat),so=Math.sin(lon),co=Math.cos(lon),N=RE/Math.sqrt(1-E2*sl*sl);
+  return{lat,lon,p:[N*cl*co,N*cl*so,N*(1-E2)*sl],east:[-so,co,0],north:[-sl*co,-sl*so,cl],up:[cl*co,cl*so,sl]};}
+/* Shadow axis and cones at time t, Earth-fixed frame, km. */
+function shadow(t){
+  const st=state(t),M=st.M,dv=sub(M,st.S),d=len(dv),u=mul(dv,1/d),mu=dot(M,u);
+  const foot=sub(M,mul(u,mu)),gamma=len(foot)/RE;
+  const sinU=(R_SUN-R_MOON)/d,sinP=(R_SUN+R_MOON)/d,tanU=sinU/Math.sqrt(1-sinU*sinU),tanP=sinP/Math.sqrt(1-sinP*sinP);
+  const Lu=R_MOON/sinU,Lp=R_MOON/sinP,hit=mu<0?rayEllipsoid(M,u):null;
+  return{t,st,M,u,d,mu,foot,gamma,tanU,tanP,Lu,Lp,hit,rPen:(Lp-mu)*tanP,rUmb:hit?(Lu-hit.s)*tanU:0};
+}
+function overlap(d,rs,rm){   // fraction of the Sun's disc hidden by the Moon
+  if(d>=rs+rm)return 0;if(d<=Math.abs(rm-rs))return rm>=rs?1:rm*rm/(rs*rs);
+  const a=Math.acos(clamp((d*d+rs*rs-rm*rm)/(2*d*rs),-1,1)),b=Math.acos(clamp((d*d+rm*rm-rs*rs)/(2*d*rm),-1,1));
+  return(rs*rs*(a-Math.sin(a)*Math.cos(a))+rm*rm*(b-Math.sin(b)*Math.cos(b)))/(PI*rs*rs);}
+/* Topocentric circumstances for an observer. */
+function local(site,t){
+  const st=state(t),m=sub(st.M,site.p),s=sub(st.S,site.p),dm=len(m),ds=len(s);
+  return{m,s,dm,ds,sep:Math.atan2(len(cross(m,s)),dot(m,s)),rm:Math.asin(R_MOON/dm),rs:Math.asin(R_SUN/ds),alt:Math.asin(dot(s,site.up)/ds)};
+}
+function bisect(f,a,b){let fa=f(a);for(let i=0;i<50;i++){const m=(a+b)/2,fm=f(m);if((fm<0)===(fa<0)){a=m;fa=fm;}else b=m;}return(a+b)/2;}
+function totality(site,tc){
+  const f=t=>{const L=local(site,t);return L.sep-(L.rm-L.rs);};
+  if(!(f(tc)<0))return null;
+  let a=tc-30,b=tc+30;while(f(a)<0&&a>tc-900)a-=30;while(f(b)<0&&b<tc+900)b+=30;
+  const c2=bisect(f,a,a+30),c3=bisect(f,b-30,b);return{c2,c3,dur:c3-c2};
+}
+function partial(site,tc){
+  const g=t=>{const L=local(site,t);return L.sep-(L.rm+L.rs);};
+  let a=tc,b=tc;while(g(a)<0&&a>tc-14400)a-=300;while(g(b)<0&&b<tc+14400)b+=300;
+  return{c1:bisect(g,a,a+300),c4:bisect(g,b-300,b)};
+}
+/* Ground footprint of the umbral cone: n points, or null if any generator misses the Earth. */
+function umbraEdge(sh,n){
+  const u=sh.u,e1=norm(cross(u,[0,0,1])),e2=cross(u,e1),out=[];
+  for(let i=0;i<n;i++){const a=i/n*TAU,c=Math.cos(a),s=Math.sin(a),w=[e1[0]*c+e2[0]*s,e1[1]*c+e2[1]*s,e1[2]*c+e2[2]*s];
+    const h=rayEllipsoid(add(sh.M,mul(w,R_MOON)),norm(sub(u,mul(w,sh.tanU))));if(!h)return null;out.push(h.p);}
+  return out;
+}
+function limitsAt(t){
+  const sh=shadow(t),a=shadow(t-15),b=shadow(t+15);if(!sh.hit||!a.hit||!b.hit||sh.rUmb<=0)return null;
+  const c=sh.hit.p,w=cross(norm(c),norm(sub(b.hit.p,a.hit.p))),pts=umbraEdge(sh,72);if(!pts)return null;
+  let mx=-1e9,mn=1e9,l=null,r=null;
+  for(const p of pts){const x=dot(sub(p,c),w);if(x>mx){mx=x;l=p;}if(x<mn){mn=x;r=p;}}
+  return{c,l,r,width:mx-mn,speed:len(sub(b.hit.p,a.hit.p))/30};
+}
+function durAt(t){const sh=shadow(t);if(!sh.hit)return null;const g=geodetic(sh.hit.p),site=mkSite(g.lat,g.lon),tot=totality(site,t);return tot?{t,site,tot}:null;}
+
+/* ───────────────────────── solve the eclipse ───────────────────────── */
+function solve(){
+  let tb=-1,gb=1e9;
+  for(let t=0;t<=86400;t+=60){const s=shadow(t);if(s.mu<0&&s.gamma<gb){gb=s.gamma;tb=t;}}
+  if(tb<0||gb>1.6)throw new Error('No solar eclipse found on this date (min γ = '+gb.toFixed(3)+')');
+  // greatest eclipse = instant the shadow axis passes closest to the centre of the Earth
+  let a=tb-120,b=tb+120;
+  for(let i=0;i<70;i++){const m1=a+(b-a)/3,m2=b-(b-a)/3;if(shadow(m1).gamma<shadow(m2).gamma)b=m2;else a=m1;}
+  const tGE=(a+b)/2,shG=shadow(tGE);
+  const pen=t=>{const s=shadow(t);return s.gamma*RE-(RE+s.rPen);},cen=t=>shadow(t).hit?-1:1;
+  const edge=(f,dir)=>{let t=tGE;while(f(t)<0&&Math.abs(t-tGE)<21600)t+=dir*60;return dir<0?bisect(f,t,t+60):bisect(f,t-60,t);};
+  const ev={tGE,gamma:shG.gamma,p1:edge(pen,-1),p4:edge(pen,1),central:!!shG.hit};
+  if(!shG.hit||shG.rUmb<=0)return ev;
+  ev.u1=edge(cen,-1);ev.u4=edge(cen,1);
+  const g=geodetic(shG.hit.p),site=mkSite(g.lat,g.lon),L=local(site,tGE),lim=limitsAt(tGE);
+  ev.ge={t:tGE,lat:g.lat,lon:g.lon,site,tot:totality(site,tGE),alt:L.alt,ratio:L.rm/L.rs,width:lim?lim.width:NaN};
+  // longest totality anywhere on the centre line
+  let best=null;
+  for(let t=ev.u1+10;t<ev.u4;t+=20){const r=durAt(t);if(r&&(!best||r.tot.dur>best.tot.dur))best=r;}
+  if(best){let lo=best.t-20,hi=best.t+20;const D=t=>{const r=durAt(t);return r?r.tot.dur:0;};
+    for(let i=0;i<40;i++){const m1=lo+(hi-lo)/3,m2=hi-(hi-lo)/3;if(D(m1)>D(m2))hi=m2;else lo=m1;}
+    best=durAt((lo+hi)/2)||best;}
+  ev.longest=best||{t:tGE,site,tot:ev.ge.tot};
+  // path of totality: centre line and both limits, every 30 s
+  ev.path=[];
+  for(let t=ev.u1+2;t<ev.u4;t+=30){const s=shadow(t);if(!s.hit)continue;const m=limitsAt(t);ev.path.push({t,c:s.hit.p,l:m?m.l:null,r:m?m.r:null});}
+  return ev;
+}
+const PLACES=[['Luxor',25.687,32.64],['Aswan',24.089,32.9],['Qena',26.164,32.727],['Asyut',27.181,31.186],['Cairo',30.044,31.236],['Jeddah',21.543,39.173],['Mecca',21.389,39.858],["Sana'a",15.369,44.191],['Benghazi',32.117,20.067],['Tripoli',32.887,13.191],['Sfax',34.74,10.76],['Tunis',36.806,10.181],['Algiers',36.754,3.059],['Oran',35.697,-0.633],['Tangier',35.759,-5.834],['Gibraltar',36.14,-5.353],['Cádiz',36.527,-6.288],['Málaga',36.721,-4.421],['Seville',37.389,-5.984],['Madrid',40.417,-3.704],['Lisbon',38.722,-9.139],['Riyadh',24.713,46.675],['Khartoum',15.5,32.56],['Mogadishu',2.046,45.318],['Ponta Delgada',37.741,-25.676],['Salalah',17.015,54.092]];
+function nearText(lat,lon){
+  let best=null;
+  for(const P of PLACES){const la=P[1]*D2R,dl=lon-P[2]*D2R,d=Math.acos(clamp(Math.sin(la)*Math.sin(lat)+Math.cos(la)*Math.cos(lat)*Math.cos(dl),-1,1))*6371;
+    if(!best||d<best.d)best={n:P[0],d,b:(Math.atan2(Math.sin(dl)*Math.cos(lat),Math.cos(la)*Math.sin(lat)-Math.sin(la)*Math.cos(lat)*Math.cos(dl))*R2D+360)%360};}
+  if(!best||best.d>800)return'';if(best.d<10)return'at '+best.n;
+  return Math.round(best.d)+' km '+['N','NE','E','SE','S','SW','W','NW'][Math.round(best.b/45)%8]+' of '+best.n;
+}
+const EV=solve();
+
+/* ───────────────────────── three.js: space scene ───────────────────────── */
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.setClearColor(0x000000,1);
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(36,1,0.01,90000);
+/* equatorial or Earth-fixed km → scene units (Earth radii, +Y = north pole) */
+const V=a=>new THREE.Vector3(a[0]/RE,a[2]/RE,-a[1]/RE);
+
+const TL=new THREE.TextureLoader();TL.setCrossOrigin('anonymous');
+function loadTex(urls,ok){let i=0;(function next(){if(i>=urls.length)return;
+  TL.load(urls[i++],x=>{x.anisotropy=renderer.capabilities.getMaxAnisotropy();ok(x);},undefined,next);})();}
+const px=(r,g,b,a)=>{const x=new THREE.DataTexture(new Uint8Array([r,g,b,a]),1,1,THREE.RGBAFormat);x.needsUpdate=true;return x;};
+const IMG=['https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/','https://unpkg.com/three-globe@2.31.0/example/img/','https://unpkg.com/three-globe/example/img/'];
+const PLN=['https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/','https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/textures/planets/','https://threejs.org/examples/textures/planets/'];
+const urls=(a,f,b,g)=>a.map(p=>p+f).concat(b?b.map(p=>p+g):[]);
+
+/* uniforms describing the Moon's shadow, shared by every material that needs them */
+const U={uSunDir:{value:new THREE.Vector3(1,0,0)},uMoonPos:{value:new THREE.Vector3(60,0,0)},uAxis:{value:new THREE.Vector3(-1,0,0)},
+  uD:{value:23000},uRs:{value:R_SUN/RE},uRm:{value:R_MOON/RE}};
+const GLSL_OVERLAP=`
+float overlapFrac(float d,float rs,float rm){
+  if(d>=rs+rm) return 0.0;
+  if(d<=abs(rm-rs)) return rm>=rs?1.0:(rm*rm)/(rs*rs);
+  float a=acos(clamp((d*d+rs*rs-rm*rm)/(2.0*d*rs),-1.0,1.0));
+  float b=acos(clamp((d*d+rm*rm-rs*rs)/(2.0*d*rm),-1.0,1.0));
+  return (rs*rs*(a-sin(a)*cos(a))+rm*rm*(b-sin(b)*cos(b)))/(3.14159265*rs*rs);
+}`;
+const VERT_WORLD=`varying vec2 vUv;varying vec3 vN,vP;
+void main(){vUv=uv;vN=normalize(mat3(modelMatrix)*normal);vec4 w=modelMatrix*vec4(position,1.0);vP=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`;
+
+/* Earth: every fragment asks how much of the Sun's disc the Moon hides as seen from that spot */
+const earthU=Object.assign({tDay:{value:px(8,24,52,255)},tNight:{value:px(0,0,0,255)},tCloud:{value:px(0,0,0,0)},tSpec:{value:px(0,0,0,255)},
+  uHasDay:{value:0},uHasNight:{value:0},uHasCloud:{value:0},uHasSpec:{value:0},uRing:{value:1}},U);
+const earthMat=new THREE.ShaderMaterial({uniforms:earthU,vertexShader:VERT_WORLD,extensions:{derivatives:true},fragmentShader:`
+uniform sampler2D tDay,tNight,tCloud,tSpec;
+uniform float uHasDay,uHasNight,uHasCloud,uHasSpec,uRing;
+uniform vec3 uSunDir,uMoonPos,uAxis;uniform float uD,uRs,uRm;
+varying vec2 vUv;varying vec3 vN,vP;
+${GLSL_OVERLAP}
+void main(){
+  vec3 N=normalize(vN),Vd=normalize(cameraPosition-vP);
+  float ndl=dot(N,uSunDir);
+  vec3 q=vP-uMoonPos;float s=max(dot(q,uAxis),1.0);float rho=length(q-s*uAxis);
+  float thM=uRm/s,thS=uRs/(s+uD),sig=rho*uD/(s*(s+uD));
+  float light=1.0-overlapFrac(sig,thS,thM);
+  float rhoU=(thM-thS)*s*(s+uD)/uD;
+  vec3 day;
+  if(uHasDay>0.5){day=texture2D(tDay,vUv).rgb;}
+  else{vec2 g=abs(fract(vUv*vec2(24.0,12.0))-0.5);float l=smoothstep(0.47,0.5,max(g.x,g.y));day=mix(vec3(0.03,0.10,0.22),vec3(0.22,0.42,0.62),l);}
+  float water=uHasSpec>0.5?texture2D(tSpec,vUv).r:0.0;
+  vec4 cl=texture2D(tCloud,vUv);float cloud=uHasCloud*cl.r*cl.a*0.9;
+  vec3 surf=mix(day,vec3(1.0),cloud);
+  float dl=pow(smoothstep(-0.10,0.70,ndl),0.85);
+  float e=pow(light,1.35);
+  vec3 H=normalize(uSunDir+Vd);
+  float sp=pow(max(dot(N,H),0.0),70.0)*water*(1.0-cloud)*0.55*step(0.0,ndl);
+  vec3 col=surf*dl*e*1.12+vec3(1.0,0.93,0.8)*sp*e+surf*0.012;
+  float nightF=1.0-smoothstep(-0.18,0.08,ndl);
+  if(uHasNight>0.5)col+=texture2D(tNight,vUv).rgb*vec3(1.0,0.85,0.6)*nightF*(1.0-cloud*0.7)*1.1;
+  float fres=pow(1.0-max(dot(N,Vd),0.0),3.2);
+  col+=vec3(0.28,0.52,1.0)*fres*0.75*dl*e;
+  col+=vec3(0.9,0.42,0.18)*fres*0.25*smoothstep(-0.25,0.0,ndl)*(1.0-smoothstep(0.0,0.3,ndl));
+  if(uRing>0.0&&rhoU>0.0){float fw=fwidth(rho);float ring=1.0-smoothstep(fw*0.8,fw*2.0,abs(rho-rhoU-fw*2.5));
+    col+=vec3(0.95,0.76,0.49)*ring*0.6*uRing*smoothstep(-0.05,0.1,ndl);}
+  gl_FragColor=vec4(col,1.0);
+}`});
+const earthSpin=new THREE.Group();scene.add(earthSpin);
+const earth=new THREE.Mesh(new THREE.SphereGeometry(1,160,112),earthMat);earth.scale.y=1-FLAT;earthSpin.add(earth);
+loadTex(urls(IMG,'earth-blue-marble.jpg',PLN,'earth_atmos_2048.jpg'),x=>{earthU.tDay.value=x;earthU.uHasDay.value=1;});
+loadTex(urls(IMG,'earth-night.jpg',PLN,'earth_lights_2048.png'),x=>{earthU.tNight.value=x;earthU.uHasNight.value=1;});
+loadTex(urls(IMG,'earth-water.png',PLN,'earth_specular_2048.jpg'),x=>{earthU.tSpec.value=x;earthU.uHasSpec.value=1;});
+loadTex(urls(PLN,'earth_clouds_1024.png'),x=>{earthU.tCloud.value=x;earthU.uHasCloud.value=1;});
+
+/* atmosphere halo */
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.13,96,64),new THREE.ShaderMaterial({uniforms:U,vertexShader:VERT_WORLD,
+  side:THREE.BackSide,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,fragmentShader:`
+uniform vec3 uSunDir;varying vec3 vN,vP;varying vec2 vUv;
+void main(){vec3 N=normalize(vN),Vd=normalize(cameraPosition-vP);
+  float g=pow(clamp(-dot(N,Vd)*2.15,0.0,1.0),2.4);
+  float sun=smoothstep(-0.4,0.35,dot(N,uSunDir));
+  gl_FragColor=vec4(mix(vec3(0.9,0.45,0.2),vec3(0.3,0.56,1.0),smoothstep(-0.2,0.3,dot(N,uSunDir)))*g*sun*0.95,1.0);}`})));
+
+/* stars, with a faint band for the Milky Way */
+(function(){
+  const mk=(n,size,op,band)=>{const p=new Float32Array(n*3),c=new Float32Array(n*3),R=40000;
+    const gn=new THREE.Vector3(0.45,0.5,0.74).normalize(),ga=new THREE.Vector3().crossVectors(gn,new THREE.Vector3(0,1,0)).normalize(),gb=new THREE.Vector3().crossVectors(gn,ga);
+    for(let i=0;i<n;i++){let v;
+      if(Math.random()<band){const a=Math.random()*TAU,h=(Math.random()+Math.random()+Math.random()-1.5)*0.22;
+        v=ga.clone().multiplyScalar(Math.cos(a)).addScaledVector(gb,Math.sin(a)).addScaledVector(gn,h).normalize();}
+      else{const z=Math.random()*2-1,a=Math.random()*TAU,r=Math.sqrt(1-z*z);v=new THREE.Vector3(r*Math.cos(a),z,r*Math.sin(a));}
+      p.set([v.x*R,v.y*R,v.z*R],i*3);
+      const k=0.35+0.65*Math.pow(Math.random(),2.2),w=Math.random();c.set([k*(0.82+0.18*w),k*0.9,k*(1-0.2*w)],i*3);}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));
+    scene.add(new THREE.Points(g,new THREE.PointsMaterial({size,sizeAttenuation:false,vertexColors:true,transparent:true,opacity:op,depthWrite:false})));};
+  mk(7000,1.1,0.8,0.45);mk(900,1.9,0.95,0.2);mk(90,2.8,1,0);
+})();
+
+/* Sun: a glow sprite far along the true direction (its light direction is exact, its distance is not drawn to scale) */
+const sunSprite=(function(){
+  const c=document.createElement('canvas');c.width=c.height=512;const g=c.getContext('2d'),r=g.createRadialGradient(256,256,0,256,256,256);
+  r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(0.035,'rgba(255,252,240,1)');r.addColorStop(0.06,'rgba(255,226,170,0.62)');
+  r.addColorStop(0.16,'rgba(255,190,110,0.2)');r.addColorStop(0.42,'rgba(255,160,80,0.05)');r.addColorStop(1,'rgba(255,140,60,0)');
+  g.fillStyle=r;g.fillRect(0,0,512,512);
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),blending:THREE.AdditiveBlending,transparent:true,depthWrite:false}));
+  s.scale.set(9000,9000,1);scene.add(s);return s;})();
+const sunLight=new THREE.DirectionalLight(0xfff4e0,1.5);scene.add(sunLight);scene.add(new THREE.AmbientLight(0x4a6088,0.16));
+
+/* Moon at its true distance and size */
+const moonMat=new THREE.MeshLambertMaterial({color:0xb8b4ac});
+const moon=new THREE.Mesh(new THREE.SphereGeometry(R_MOON/RE,64,48),moonMat);scene.add(moon);
+loadTex(urls(PLN,'moon_1024.jpg'),x=>{moonMat.map=x;moonMat.color.set(0xffffff);moonMat.needsUpdate=true;});
+
+/* umbral and penumbral cones, drawn only between the Moon and the Earth */
+const coneMat=(col,alpha)=>new THREE.ShaderMaterial({uniforms:{uMoonPos:U.uMoonPos,uAxis:U.uAxis,uCol:{value:new THREE.Color(col)},uAlpha:{value:alpha},uCut:{value:60}},
+  side:THREE.DoubleSide,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,
+  vertexShader:`varying vec3 vP;void main(){vec4 w=modelMatrix*vec4(position,1.0);vP=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
+  fragmentShader:`uniform vec3 uMoonPos,uAxis,uCol;uniform float uAlpha,uCut;varying vec3 vP;
+void main(){float s=dot(vP-uMoonPos,uAxis);if(s<0.0||s>uCut)discard;gl_FragColor=vec4(uCol*uAlpha*(0.55+0.45*smoothstep(0.0,uCut,s)),1.0);}`});
+const umbraCone=new THREE.Mesh(new THREE.ConeGeometry(1,1,72,1,true),coneMat(0xffc27a,0.16));
+const penCone=new THREE.Mesh(new THREE.ConeGeometry(1,1,96,1,true),coneMat(0x6f9bff,0.035));
+scene.add(umbraCone,penCone);
+
+/* path of totality, fixed to the turning Earth */
+const LIFT=1.0016,GOLD=0xf1c27d;
+const geoLabel={pos:null,el:null};
+(function(){
+  if(!EV.path||!EV.path.length)return;
+  const dens=(a,b,out)=>{const n=Math.max(1,Math.ceil(len(sub(a,b))/110)),la=len(a),lb=len(b);
+    for(let k=0;k<n;k++){const f=k/n,p=[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f],v=V(mul(p,(la+(lb-la)*f)/len(p)*LIFT));out.push(v.x,v.y,v.z);}};
+  const line=(pts,op)=>{if(pts.length<2)return;const o=[];for(let i=0;i<pts.length-1;i++)dens(pts[i],pts[i+1],o);
+    const e=V(mul(pts[pts.length-1],LIFT));o.push(e.x,e.y,e.z);
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(o,3));
+    earthSpin.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:op,depthWrite:false})));};
+  line(EV.path.map(p=>p.c),0.9);
+  const lim=EV.path.filter(p=>p.l&&p.r);
+  line(lim.map(p=>p.l),0.45);line(lim.map(p=>p.r),0.45);
+  const tri=[];
+  for(let i=0;i<lim.length-1;i++){
+    if(lim[i+1].t-lim[i].t>31)continue;
+    const L=[],R=[];dens(lim[i].l,lim[i+1].l,L);dens(lim[i].r,lim[i+1].r,R);
+    const e1=V(mul(lim[i+1].l,LIFT)),e2=V(mul(lim[i+1].r,LIFT));L.push(e1.x,e1.y,e1.z);R.push(e2.x,e2.y,e2.z);
+    const n=Math.min(L.length,R.length)/3-1,nl=L.length/3-1,nr=R.length/3-1;
+    for(let k=0;k<n;k++){const a=Math.round(k*nl/n)*3,a2=Math.round((k+1)*nl/n)*3,b=Math.round(k*nr/n)*3,b2=Math.round((k+1)*nr/n)*3;
+      tri.push(L[a],L[a+1],L[a+2],R[b],R[b+1],R[b+2],L[a2],L[a2+1],L[a2+2], R[b],R[b+1],R[b+2],R[b2],R[b2+1],R[b2+2],L[a2],L[a2+1],L[a2+2]);}
+  }
+  if(tri.length){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(tri,3));
+    earthSpin.add(new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:GOLD,transparent:true,opacity:0.13,side:THREE.DoubleSide,depthWrite:false})));}
+  if(EV.ge){
+    const p=V(mul(EV.ge.site.p,1.003)),q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),p.clone().normalize());
+    const ring=new THREE.Mesh(new THREE.RingGeometry(0.02,0.0235,64),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,transparent:true,opacity:0.95,depthWrite:false}));
+    const dotm=new THREE.Mesh(new THREE.CircleGeometry(0.0045,24),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,depthWrite:false}));
+    ring.position.copy(p);ring.quaternion.copy(q);dotm.position.copy(p);dotm.quaternion.copy(q);earthSpin.add(ring,dotm);
+    geoLabel.pos=p;geoLabel.el=document.createElement('div');geoLabel.el.className='lab';geoLabel.el.innerHTML='GREATEST ECLIPSE<i></i>';
+    geoLabel.el.style.transformOrigin='50% 100%';document.getElementById('labels').appendChild(geoLabel.el);
+  }
+})();
+
+/* ───────────────────────── the sky from the ground (one full-screen shader) ───────────────────────── */
+const skyU={uRes:{value:new THREE.Vector2(1,1)},uF:{value:new THREE.Vector3()},uR:{value:new THREE.Vector3()},uUp:{value:new THREE.Vector3()},
+  uSun:{value:new THREE.Vector3()},uEx:{value:new THREE.Vector3()},uEy:{value:new THREE.Vector3()},uMoon:{value:new THREE.Vector2()},
+  uTan:{value:0.05},uSunR:{value:0.00465},uMoonR:{value:0.005},uLight:{value:1},uTime:{value:0}};
+const skyScene=new THREE.Scene(),skyCam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const skyMesh=new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.ShaderMaterial({uniforms:skyU,depthTest:false,depthWrite:false,
+vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.0,1.0);}`,
+fragmentShader:`
+uniform vec2 uRes,uMoon;uniform vec3 uF,uR,uUp,uSun,uEx,uEy;
+uniform float uTan,uSunR,uMoonR,uLight,uTime;
+varying vec2 vUv;
+float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+  return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x),f.y);}
+float fbm(vec2 p){float a=0.5,s=0.0;for(int i=0;i<5;i++){s+=a*noise(p);p=p*2.03+vec2(17.1,9.2);a*=0.5;}return s;}
+/* K-corona: steep inner glow, equatorial streamers, polar plumes; dn = unit direction from Sun centre, r in solar radii */
+float corona(vec2 dn,float r){
+  r=max(r,1.0);
+  float ca=dn.x*0.906+dn.y*0.423,sa=dn.y*0.906-dn.x*0.423;
+  float rays=fbm(dn*7.0+vec2(4.0,1.0));
+  float fine=fbm(dn*26.0+vec2(r*0.35,0.0));
+  float stream=pow(ca*ca,1.5)*(0.35+2.6*rays*rays);
+  float plume=pow(sa*sa,4.0)*smoothstep(0.3,0.7,fine)*0.5;
+  float inner=pow(r,-8.0)*(0.8+0.4*rays);
+  float mid=pow(r,-3.2)*0.42*(0.15+stream+plume);
+  float outer=pow(r,-1.9)*0.045*(stream*stream*0.9+0.02);
+  return (inner+mid+outer)*(0.72+0.56*fine);
+}
+void main(){
+  vec2 sc=(vUv*2.0-1.0)*vec2(uRes.x/uRes.y,1.0)*uTan;
+  vec3 r=normalize(uF+uR*sc.x+uUp*sc.y);          // view ray in east-north-up
+  float pxa=2.0*uTan/uRes.y;                       // radians per pixel
+  float alt=r.z,h=clamp(alt,0.0,1.0);
+  float L=clamp(uLight,0.0,1.0);
+  float B=pow(L,0.4);                              // how bright the day feels
+  float dark=1.0-smoothstep(0.0,0.02,L);
+  vec3 day=mix(vec3(0.60,0.76,0.94),vec3(0.13,0.33,0.74),pow(h,0.42));
+  vec3 tot=mix(vec3(0.07,0.10,0.24),vec3(0.010,0.016,0.045),pow(h,0.5))
+          +vec3(1.0,0.50,0.18)*0.55*exp(-h*10.0)+vec3(0.95,0.72,0.45)*0.22*exp(-h*4.0);
+  vec3 col=mix(tot,day,B);
+  // a few stars and planets once it is dark
+  if(dark>0.0&&alt>0.0){
+    vec2 sp=vec2(atan(r.x,r.y),asin(clamp(r.z,-1.0,1.0)))*70.0;
+    vec2 id=floor(sp),f=fract(sp)-0.5;float hs=hash(id);
+    if(hs>0.996){vec2 o=(vec2(hash(id+3.1),hash(id+7.7))-0.5)*0.6;float rad=max(1.3*pxa*70.0,0.012);
+      col+=vec3(0.9,0.95,1.0)*(1.0-smoothstep(0.0,rad,length(f-o)))*dark*(0.35+0.65*(hs-0.996)/0.004);}
+  }
+  float cs=dot(r,uSun);
+  if(cs>0.15){
+    vec2 q=vec2(dot(r,uEx),dot(r,uEy))/cs;         // offset from the Sun's centre, radians
+    float ql=length(q),rr=ql/uSunR;
+    vec2 dn=q/max(ql,1e-9);
+    vec2 qm=q-uMoon;float dm=length(qm);vec2 mn=qm/max(dm,1e-9);
+    float limb=uMoonR*(1.0+0.0022*(fbm(mn*14.0+3.0)-0.5)+0.0012*(noise(mn*60.0)-0.5));   // lunar mountains and valleys
+    float aa=max(pxa,uSunR*0.0015);
+    float clear=smoothstep(limb-aa,limb+aa,dm);    // 1 where the Moon is not in the way
+    float cv=1.0-smoothstep(0.0002,0.012,L);
+    float cor=1.0-exp(-corona(dn,rr)*2.6*cv);
+    float cv2=1.0-smoothstep(0.0,0.004,L);
+    float prom=0.0;
+    for(int i=0;i<5;i++){float fi=float(i);float a=hash(vec2(fi,1.7))*6.2832;vec2 pd=vec2(cos(a),sin(a));
+      float w=0.03+0.05*hash(vec2(fi,5.1)),hh=0.025+0.05*hash(vec2(fi,9.3));
+      prom+=exp(-(1.0-dot(dn,pd))*2.0/(w*w))*(1.0-smoothstep(0.0,hh,rr-1.0))*(0.6+0.8*noise(q/uSunR*40.0));}
+    float chrom=exp(-max(rr-1.0,0.0)/0.010);
+    vec3 red=vec3(1.0,0.22,0.38)*(chrom*0.9+prom*1.4)*cv2;
+    col+=(vec3(0.93,0.96,1.0)*cor+red)*clear;
+    col+=vec3(0.022,0.026,0.034)*dark*(1.0-clear)*(0.5+fbm(qm/uMoonR*2.5+5.0));             // earthshine on the Moon
+    float disc=1.0-smoothstep(1.0-aa/uSunR,1.0+aa/uSunR,rr);
+    float mu=sqrt(max(1.0-rr*rr,0.0));
+    col=mix(col,vec3(1.0,0.97,0.9)*(0.8+0.5*mu),disc*clear);
+    // glare of whatever photosphere is left: full Sun, crescent, diamond ring
+    vec2 md=uMoon/max(length(uMoon),1e-9);
+    vec2 gq=(q+md*uSunR*(1.0-L)*(1.0-L))/uSunR;float gd=length(gq);
+    float amp=pow(L,0.22),w=0.25+1.6*amp;
+    float glare=amp*(1.0/(1.0+gd*gd/(w*w))+0.25/(1.0+pow(gd/(w*5.0),1.5)));
+    float ga=atan(gq.y,gq.x);
+    float spikes=pow(abs(cos(ga*2.0+0.4)),60.0)+0.6*pow(abs(cos(ga*2.0+1.97)),60.0);
+    glare+=amp*(1.0-L)*spikes*0.6/(1.0+gd*gd/(w*w*9.0));
+    col+=vec3(1.0,0.95,0.86)*glare*1.6;
+  }
+  // desert ridgeline
+  float az=atan(r.x,r.y);vec2 hz=vec2(cos(az),sin(az));
+  float ridge=0.012+0.05*fbm(hz*2.3+vec2(1.0,7.0))*smoothstep(0.2,0.7,fbm(hz*0.9+3.0))+0.006*fbm(hz*24.0);
+  if(alt<ridge){
+    float depth=clamp((ridge-alt)/0.25,0.0,1.0);
+    vec3 sand=mix(vec3(0.46,0.36,0.25),vec3(0.62,0.52,0.38),fbm(hz*9.0+vec2(alt*50.0)));
+    vec3 g=sand*(0.2+0.8*B)*B*(1.0-0.45*depth)+vec3(0.012,0.012,0.018)+vec3(0.5,0.26,0.1)*0.06*dark*exp(-depth*6.0);
+    col=mix(g,col*0.6,exp(-depth*9.0)*0.5);
+  }
+  vec2 vv=vUv-0.5;col*=1.0-0.5*dot(vv,vv);
+  col+=(hash(gl_FragCoord.xy+fract(uTime)*91.0)-0.5)/255.0;
+  gl_FragColor=vec4(col,1.0);
+}`}));
+skyMesh.frustumCulled=false;skyScene.add(skyMesh);
+
+/* observer: the point on the centre line where totality lasts longest */
+let SITE=null,LC=null;
+if(EV.longest&&EV.longest.tot){SITE=EV.longest.site;const tt=EV.longest.tot,pc=partial(SITE,EV.longest.t);
+  LC={c1:pc.c1,c2:tt.c2,c3:tt.c3,c4:pc.c4,mid:(tt.c2+tt.c3)/2,dur:tt.dur};}
+const look={pan:[0,0],fov:5.5,tPan:[0,0],tFov:5.5,wide:false};
+function updateSky(t,dt){
+  const Lc=local(SITE,t),en=v=>[dot(v,SITE.east),dot(v,SITE.north),dot(v,SITE.up)];
+  const s=norm(en(Lc.s)),m=norm(en(Lc.m)),ex=norm(cross(s,[0,0,1])),ey=cross(ex,s),ms=dot(m,s);
+  const light=1-overlap(Lc.sep,Lc.rs,Lc.rm);
+  if(look.wide)look.tPan=[0,-Math.max(0,Lc.alt-45*D2R)];
+  const k=1-Math.exp(-dt*5);
+  look.pan[0]+=(look.tPan[0]-look.pan[0])*k;look.pan[1]+=(look.tPan[1]-look.pan[1])*k;
+  look.fov=Math.exp(Math.log(look.fov)+(Math.log(look.tFov)-Math.log(look.fov))*k);
+  const a=Math.hypot(look.pan[0],look.pan[1]);let F=s;
+  if(a>1e-9){const dx=look.pan[0]/a,dy=look.pan[1]/a,ca=Math.cos(a),sa=Math.sin(a);
+    F=[s[0]*ca+(ex[0]*dx+ey[0]*dy)*sa,s[1]*ca+(ex[1]*dx+ey[1]*dy)*sa,s[2]*ca+(ex[2]*dx+ey[2]*dy)*sa];}
+  const R=norm(sub(ex,mul(F,dot(ex,F)))),Up=cross(R,F);
+  skyU.uF.value.fromArray(F);skyU.uR.value.fromArray(R);skyU.uUp.value.fromArray(Up);
+  skyU.uSun.value.fromArray(s);skyU.uEx.value.fromArray(ex);skyU.uEy.value.fromArray(ey);
+  skyU.uMoon.value.set(dot(m,ex)/ms,dot(m,ey)/ms);
+  skyU.uSunR.value=Lc.rs;skyU.uMoonR.value=Lc.rm;skyU.uLight.value=light;skyU.uTan.value=Math.tan(look.fov*D2R/2);
+  skyU.uTime.value=(skyU.uTime.value+dt)%1000;
+  return{Lc,light,az:(Math.atan2(s[0],s[1])*R2D+360)%360};
+}
+
+/* ───────────────────────── results panel (everything here is computed above) ───────────────────────── */
+const $=id=>document.getElementById(id);
+(function(){
+  $('geTime').innerHTML=fmtUT(EV.tGE)+'<small>UT</small>';
+  $('foot').textContent='Sun: VSOP87 series'+(SUN_FALLBACK?' (guard tripped: Keplerian solution used)':'')+' · Moon: ELP-2000/82 main terms · WGS84 ellipsoid · ΔT '+DELTA_T+' s · smooth lunar limb, no refraction.';
+  const sg=shadow(EV.tGE).foot[2]>=0?1:-1;
+  $('geGamma').textContent=(sg*EV.gamma).toFixed(4);
+  if(!EV.ge){$('geWhere').textContent='The shadow axis misses the Earth in this model';return;}
+  const g=EV.ge;
+  $('geWhere').textContent=fmtLat(g.lat)+'   '+fmtLon(g.lon);
+  $('geNear').textContent=nearText(g.lat,g.lon)||' ';
+  $('geDur').textContent=g.tot?fmtDur(g.tot.dur):'not total';
+  $('geWidth').textContent=isFinite(g.width)?Math.round(g.width)+' km':'—';
+  $('geAlt').textContent=(g.alt*R2D).toFixed(1)+'°';
+  $('geRatio').textContent=g.ratio.toFixed(4);
+  const l=EV.longest;
+  if(l&&l.tot){$('lgWhere').textContent=fmtLat(l.site.lat)+'  '+fmtLon(l.site.lon);$('lgDur').textContent=fmtDur(l.tot.dur);
+    const nt=nearText(l.site.lat,l.site.lon);$('lgNear').textContent=(nt?nt+' · ':'')+'mid-totality '+fmtUT((l.tot.c2+l.tot.c3)/2)+' UT';}
+})();
+if(LC)$('gTable').innerHTML=`<tr><td>Observer</td><td>${fmtLat(SITE.lat)}, ${fmtLon(SITE.lon)}</td></tr>
+<tr><td>First contact</td><td>${fmtUT(LC.c1)} UT</td></tr><tr><td>Totality begins</td><td>${fmtUT(LC.c2,1)}</td></tr>
+<tr><td>Totality ends</td><td>${fmtUT(LC.c3,1)}</td></tr><tr><td>Last contact</td><td>${fmtUT(LC.c4)} UT</td></tr>
+<tr><td>Duration</td><td>${fmtDur(LC.dur)}</td></tr><tr><td>Sun</td><td id="gSun"></td></tr>`;
+
+/* ───────────────────────── state, cameras, per-frame update ───────────────────────── */
+let view='orbit',t=(EV.u1||EV.p1)-900,playing=true,speed=300,range=[0,1],scrubbing=false;
+const orbit={th:0,ph:1.2,r:4.2,cth:0,cph:0.3,cr:1.8};
+(function(){const th=gast(EV.tGE),v=V(EV.ge?EV.ge.site.p:shadow(EV.tGE).foot).normalize();
+  const x=v.x*Math.cos(th)+v.z*Math.sin(th),z=-v.x*Math.sin(th)+v.z*Math.cos(th);
+  orbit.th=Math.atan2(x,z)-0.2;orbit.ph=clamp(Math.acos(v.y)+0.08,0.3,2.8);})();
+const Y_AXIS=new THREE.Vector3(0,1,0),sph=(th,ph,r)=>new THREE.Vector3(r*Math.sin(ph)*Math.sin(th),r*Math.cos(ph),r*Math.sin(ph)*Math.cos(th));
+function updateSpace(sh){
+  const st=sh.st;
+  earthSpin.rotation.y=st.th;earthSpin.updateMatrixWorld(true);
+  const Sv=V(st.Si),Mv=V(st.Mi),sd=Sv.clone().normalize(),ax=Mv.clone().sub(Sv).normalize();
+  U.uSunDir.value.copy(sd);U.uMoonPos.value.copy(Mv);U.uAxis.value.copy(ax);U.uD.value=sh.d/RE;
+  sunSprite.position.copy(sd).multiplyScalar(30000);sunLight.position.copy(sd);
+  moon.position.copy(Mv);moon.lookAt(0,0,0);moon.rotateY(-PI/2);
+  const Lu=sh.Lu/RE,Lp=sh.Lp/RE,sF=-sh.mu/RE,rm=R_MOON/RE,H=Lp+sF;
+  umbraCone.scale.set(rm,Lu,rm);umbraCone.position.copy(Mv).addScaledVector(ax,Lu/2);umbraCone.quaternion.setFromUnitVectors(Y_AXIS,ax);
+  umbraCone.material.uniforms.uCut.value=sh.hit?sh.hit.s/RE:Math.min(Lu,sF+1.2);
+  penCone.scale.set(H*sh.tanP,H,H*sh.tanP);penCone.position.copy(Mv).addScaledVector(ax,(sF-Lp)/2);
+  penCone.quaternion.setFromUnitVectors(Y_AXIS,ax.clone().negate());penCone.material.uniforms.uCut.value=sF;
+  if(view==='chase'){
+    const dir=earthSpin.localToWorld(V(sh.hit?sh.hit.p:sh.foot)).normalize();
+    camera.position.copy(sph(Math.atan2(dir.x,dir.z)+orbit.cth,clamp(Math.acos(clamp(dir.y,-1,1))+orbit.cph,0.05,PI-0.05),orbit.cr));
+    camera.up.set(0,1,0);camera.lookAt(dir.multiplyScalar(0.985));
+  }else{camera.position.copy(sph(orbit.th,orbit.ph,orbit.r));camera.up.set(0,1,0);camera.lookAt(0,0,0);}
+  camera.updateMatrixWorld(true);
+  if(geoLabel.el){
+    const w=earthSpin.localToWorld(geoLabel.pos.clone()),vis=w.clone().normalize().dot(camera.position.clone().sub(w).normalize())>0.06;
+    geoLabel.el.style.display=vis?'block':'none';
+    if(vis){const p=w.project(camera);geoLabel.el.style.transform=`translate(${((p.x*0.5+0.5)*innerWidth).toFixed(1)}px,${((-p.y*0.5+0.5)*innerHeight).toFixed(1)}px) translate(-50%,-100%)`;}
+  }
+}
+function nowText(sh){
+  if(sh.hit&&sh.rUmb>0){
+    const g=geodetic(sh.hit.p),m=limitsAt(t),r=durAt(t),nt=nearText(g.lat,g.lon);
+    return'<b>Umbra at '+fmtLat(g.lat)+', '+fmtLon(g.lon)+'</b>'+(nt?'<br>'+nt:'')+'<br>'
+      +(m?Math.round(m.speed*3600).toLocaleString('en-US')+' km/h over the ground · '+Math.round(m.width)+' km wide':'grazing the edge of the Earth')
+      +(r?'<br>totality on the centre line '+fmtDur(r.tot.dur):'');
+  }
+  if(t>=EV.p1&&t<=EV.p4)return'<b>Penumbra on Earth</b><br>a partial eclipse is under way; the umbra '+(t<EV.tGE?'has not touched down yet':'has lifted off the ground');
+  return t<EV.p1?'<b>Before first contact</b><br>the Moon’s shadow is still off the Earth':'<b>Eclipse over</b><br>the Moon’s shadow has left the Earth';
+}
+function groundHud(info){
+  const cov=(1-info.light)*100,cs=cov.toFixed(cov>99?2:0)+'% of the Sun covered';let ph,ct;
+  if(t<LC.c1){ph='Before first contact';ct='the Moon arrives in '+fmtMS(LC.c1-t);}
+  else if(t<LC.c2){ph=LC.c2-t<25?'Diamond ring':'Partial eclipse';ct='totality in '+fmtMS(LC.c2-t)+' · '+cs;}
+  else if(t<=LC.c3){ph='Totality';ct=fmtMS(LC.c3-t)+' of '+fmtMS(LC.dur)+' remaining';}
+  else if(t<LC.c4){ph=t-LC.c3<25?'Diamond ring':'Partial eclipse';ct='ends in '+fmtMS(LC.c4-t)+' · '+cs;}
+  else{ph='After last contact';ct=' ';}
+  $('gPhase').textContent=ph;$('gCount').textContent=ct;
+  const gs=$('gSun');if(gs)gs.textContent='altitude '+(info.Lc.alt*R2D).toFixed(1)+'° · azimuth '+info.az.toFixed(0)+'°';
+}
+
+/* ───────────────────────── controls ───────────────────────── */
+const scrub=$('scrub'),ticksEl=$('ticks');
+function setRange(){
+  let marks;
+  if(view==='ground'){range=[LC.c1-240,LC.c4+240];marks=[[LC.c1,'first contact'],[(LC.c2+LC.c3)/2,'totality',1],[LC.c4,'last contact']];}
+  else{range=[EV.p1-420,EV.p4+420];marks=[[EV.p1,'penumbra arrives'],[EV.p4,'penumbra leaves']];
+    if(EV.u1)marks.push([EV.u1,'umbra lands'],[EV.tGE,'greatest',1],[EV.u4,'umbra lifts']);}
+  ticksEl.innerHTML=marks.map(m=>`<div class="tick${m[2]?' key':''}" style="left:${((m[0]-range[0])/(range[1]-range[0])*100).toFixed(2)}%"><span>${m[1]}</span></div>`).join('');
+  t=clamp(t,range[0],range[1]);
+}
+function setSpeed(s){speed=s;document.querySelectorAll('#speeds button').forEach(b=>b.classList.toggle('on',+b.dataset.s===s));}
+function setPlaying(p){playing=p;$('play').textContent=p?'❚❚':'▶';}
+function setView(v){
+  if(v==='ground'&&!LC)return;
+  const prev=view;view=v;
+  document.querySelectorAll('#views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  $('ground').style.display=v==='ground'?'block':'none';$('labels').style.display=v==='ground'?'none':'block';
+  $('hint').textContent=v==='ground'?'drag to look around · scroll to zoom':v==='chase'?'drag to tilt · scroll to change height':'drag to orbit · scroll to zoom — the Moon is 58 Earth-radii out';
+  setRange();
+  if(v==='ground'){t=LC.c2-50;setSpeed(10);setPlaying(true);look.wide=false;look.tPan=[0,0];look.tFov=5.5;$('gTele').classList.add('on');$('gWide').classList.remove('on');}
+  else{if(prev==='ground')setSpeed(300);if(v==='chase'&&EV.u1&&!(t>EV.u1-200&&t<EV.u4))t=EV.u1-120;}
+}
+document.querySelectorAll('#views button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+document.querySelectorAll('#speeds button').forEach(b=>b.addEventListener('click',()=>setSpeed(+b.dataset.s)));
+$('play').addEventListener('click',()=>setPlaying(!playing));
+scrub.addEventListener('input',()=>{scrubbing=true;t=range[0]+scrub.value/1000*(range[1]-range[0]);});
+['change','pointerup','touchend'].forEach(n=>scrub.addEventListener(n,()=>{scrubbing=false;}));
+$('gTele').addEventListener('click',()=>{look.wide=false;look.tPan=[0,0];look.tFov=5.5;$('gTele').classList.add('on');$('gWide').classList.remove('on');});
+$('gWide').addEventListener('click',()=>{look.wide=true;look.tFov=100;$('gWide').classList.add('on');$('gTele').classList.remove('on');});
+$('gJump').addEventListener('click',()=>{t=LC.c2-50;setSpeed(10);setPlaying(true);});
+window.addEventListener('keydown',e=>{
+  if(e.code==='Space'){e.preventDefault();setPlaying(!playing);}
+  else if(e.code==='ArrowRight')t=Math.min(range[1],t+speed/4);
+  else if(e.code==='ArrowLeft')t=Math.max(range[0],t-speed/4);
+  else if(e.key==='1')setView('orbit');else if(e.key==='2')setView('chase');else if(e.key==='3')setView('ground');});
+function zoom(f){
+  if(view==='ground'){look.wide=false;look.tFov=clamp(look.tFov*f,0.9,110);}
+  else if(view==='chase')orbit.cr=clamp(1+(orbit.cr-1)*f,1.06,12);
+  else orbit.r=clamp(1+(orbit.r-1)*f,1.25,160);
+}
+function drag(dx,dy){
+  if(view==='ground'){const k=2*Math.tan(look.fov*D2R/2)/innerHeight;look.wide=false;
+    look.tPan=[clamp(look.tPan[0]-dx*k,-1.4,1.4),clamp(look.tPan[1]+dy*k,-1.4,1.4)];look.pan=look.tPan.slice();}
+  else if(view==='chase'){orbit.cth=clamp(orbit.cth-dx*0.004,-1.3,1.3);orbit.cph=clamp(orbit.cph-dy*0.004,-1.2,1.2);}
+  else{const k=0.005*Math.min(1,(orbit.r-1)/2+0.15);orbit.th-=dx*k;orbit.ph=clamp(orbit.ph-dy*k,0.05,PI-0.05);}
+}
+const ptr=new Map();let pinch=0;
+canvas.addEventListener('pointerdown',e=>{try{canvas.setPointerCapture(e.pointerId);}catch(_){}ptr.set(e.pointerId,[e.clientX,e.clientY]);});
+canvas.addEventListener('pointermove',e=>{const p=ptr.get(e.pointerId);if(!p)return;const dx=e.clientX-p[0],dy=e.clientY-p[1];p[0]=e.clientX;p[1]=e.clientY;
+  if(ptr.size>=2){const a=[...ptr.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pinch&&d>0)zoom(pinch/d);pinch=d;return;}
+  drag(dx,dy);});
+const ptrUp=e=>{ptr.delete(e.pointerId);pinch=0;};
+canvas.addEventListener('pointerup',ptrUp);canvas.addEventListener('pointercancel',ptrUp);
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(Math.exp(clamp(e.deltaY,-300,300)*0.0012));},{passive:false});
+function resize(){const w=window.innerWidth,h=window.innerHeight,pr=renderer.getPixelRatio();renderer.setSize(w,h,false);
+  camera.aspect=w/h;camera.updateProjectionMatrix();skyU.uRes.value.set(w*pr,h*pr);}
+window.addEventListener('resize',resize);resize();
+
+/* ───────────────────────── main loop ───────────────────────── */
+setRange();setSpeed(speed);
+if(!LC)document.querySelector('#views button[data-view="ground"]').disabled=true;
+let last=performance.now(),hudT=-1e9;
+function frame(now){
+  const dt=clamp((now-last)/1000,0,0.1);last=now;
+  if(playing&&!scrubbing){t+=dt*speed;if(t>range[1])t=range[0];}
+  const sh=shadow(t),hud=now-hudT>90;
+  if(view==='ground'){const info=updateSky(t,dt);renderer.render(skyScene,skyCam);if(hud)groundHud(info);}
+  else{updateSpace(sh);renderer.render(scene,camera);}
+  if(hud){hudT=now;$('now').innerHTML=nowText(sh);$('clock').innerHTML=fmtUT(t,speed<=10)+'<small>UT</small>';}
+  if(!scrubbing)scrub.value=Math.round((t-range[0])/(range[1]-range[0])*1000);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
